@@ -1,0 +1,19 @@
+services:
+  memory-bank-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: memory-bank-mcp
+    ports:
+      - "8102:8102"
+    volumes:
+      - /mnt/cache/appdata/memory-bank-mcp:/memory-bank
+    environment:
+      - MEMORY_BANK_ROOT=/memory-bank
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8102/mcp"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s 
